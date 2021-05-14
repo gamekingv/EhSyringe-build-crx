@@ -34,8 +34,9 @@ jobs:
 
       # 处理Manifest
       - name: Parse Manifest
+        id: parse_manifest
         run: |
-          node parse.js
+          echo "::set-output name=version::$(node parse.js)"
 
       # 打包扩展
       - name: Pack ZIP
@@ -60,8 +61,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          tag_name: v${{ env.EHSYRINGE_VERSION }}
-          release_name: v${{ env.EHSYRINGE_VERSION }}
+          tag_name: v${{ steps.parse_manifest.outputs.version }}
+          release_name: v${{ steps.parse_manifest.outputs.version }}
           draft: false
           prerelease: false
       - name: Upload CRX
