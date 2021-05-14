@@ -42,6 +42,7 @@ jobs:
         with:
           extensionDir: 'ehsyringe.chrome'
           zipFilePath: 'build/extension.zip'
+
       - uses: cardinalby/webext-buildtools-chrome-crx-action@v2
         with:
           zipFilePath: 'build/extension.zip',
