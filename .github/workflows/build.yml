@@ -36,7 +36,10 @@ jobs:
       - name: Parse Manifest
         id: parse_manifest
         run: |
+          npm install got
           echo "::set-output name=version::$(node parse.js)"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       # 打包扩展
       - name: Pack ZIP
