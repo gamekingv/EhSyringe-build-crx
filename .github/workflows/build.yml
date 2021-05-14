@@ -66,6 +66,7 @@ jobs:
         with:
           tag_name: v${{ steps.parse_manifest.outputs.version }}
           release_name: v${{ steps.parse_manifest.outputs.version }}
+          body: "自动更新到 v${{ steps.parse_manifest.outputs.version }} 版本"
           draft: false
           prerelease: false
       - name: Upload CRX
