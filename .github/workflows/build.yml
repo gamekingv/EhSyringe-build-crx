@@ -1,0 +1,38 @@
+name: offline-download
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      # 安装环境
+      - name: Install Enviroment
+        run: |
+          sudo apt-get update
+          sudo apt-get install wget
+          sudo apt-get install unar
+
+      # 获取最新Release
+      - name: Fetch
+        run: |
+          echo "开始下载"
+          wget 'https://github.com/EhTagTranslation/EhSyringe/releases/latest/download/ehsyringe.chrome.zip'
+
+      # 解压
+      - name: Decompression
+        run: |
+          echo "开始解压："
+          ls | egrep '\.(rar|zip)$'
+          echo ""
+          ls | egrep '\.(rar|zip)$' | xargs -d '\n' -n1 -i unar "{}"
+
+      # 获取版本号
+      - name: Get Version
+        run: |
+          cat 'ehsyringe.chrome/manifest.json'
