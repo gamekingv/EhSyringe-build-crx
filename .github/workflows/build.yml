@@ -43,11 +43,12 @@ jobs:
         with:
           extensionDir: 'ehsyringe.chrome'
           zipFilePath: 'build/extension.zip'
+
       - name: Pack CRX
       - uses: cardinalby/webext-buildtools-chrome-crx-action@v2
         with:
-          zipFilePath: 'build/extension.zip',
+          zipFilePath: 'build/extension.zip'
           crxFilePath: 'build/extension.crx'
-          privateKey: ${{ secrets.CRX_PRIVATE_KEY }},
-          updateXmlPath: 'build/update.xml',      
+          privateKey: ${{ secrets.CRX_PRIVATE_KEY }}
+          updateXmlPath: 'build/update.xml'
           updateXmlCodebaseUrl: "https://github.com/${{ github.repository }}/releases/latest/download/extension.crx"
