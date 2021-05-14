@@ -38,11 +38,12 @@ jobs:
           node parse.js
 
       # 打包扩展
+      - name: Pack ZIP
       - uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
         with:
           extensionDir: 'ehsyringe.chrome'
           zipFilePath: 'build/extension.zip'
-
+      - name: Pack CRX
       - uses: cardinalby/webext-buildtools-chrome-crx-action@v2
         with:
           zipFilePath: 'build/extension.zip',
