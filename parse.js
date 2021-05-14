@@ -28,10 +28,19 @@ async function cancelWorkflow() {
   const manifest = JSON.parse(await fs.readFile('ehsyringe.chrome/manifest.json'));
   manifest.update_url = `https://github.com/${repository}/releases/latest/download/update.xml`;
   await fs.writeFile('ehsyringe.chrome/manifest.json', JSON.stringify(manifest, null, 2));
-  const { body } = await client.get(`https://api.github.com/repos/${repository}/releases/latest`);
-  if (`${manifest.version}` === body.tag_name.substr(1)) {
-    await cancelWorkflow();
-    await new Promise(res => setTimeout(() => res(), 60000));
+  try {
+    const { body } = await client.get(`https://api.github.com/repos/${repository}/releases/latest`);
+    if (`${manifest.version}` === body.tag_name.substr(1)) {
+      await cancelWorkflow();
+      await new Promise(res => setTimeout(() => res(), 60000));
+    }
+  }
+  catch (error) {
+    if (!error.response || error.response.statusCode !== 404) {
+      console.log(error);
+      console.log(error.response.body);
+      process.exit(1);
+    }
   }
   console.log(manifest.version);
 })();
