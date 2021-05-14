@@ -1,0 +1,30 @@
+{
+  "name": "ehsyringe-build-crx",
+  "version": "1.0.0",
+  "description": "",
+  "devDependencies": {
+    "@babel/core": "^7.14.2",
+    "@babel/eslint-parser": "^7.14.2",
+    "eslint": "^7.26.0"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true
+    },
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "requireConfigFile": false
+    },
+    "rules": {
+      "semi": "warn",
+      "quotes": [
+        "warn",
+        "single"
+      ],
+      "no-var": "error",
+      "no-unused-vars": "warn"
+    }
+  }
+}

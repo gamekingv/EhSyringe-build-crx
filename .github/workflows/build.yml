@@ -32,7 +32,20 @@ jobs:
           echo ""
           ls | egrep '\.(rar|zip)$' | xargs -d '\n' -n1 -i unar "{}"
 
-      # 获取版本号
-      - name: Get Version
+      # 处理Manifest
+      - name: Parse Manifest
         run: |
-          cat 'ehsyringe.chrome/manifest.json'
+          node parse.js
+
+      # 打包扩展
+      - uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
+        with:
+          extensionDir: 'ehsyringe.chrome'
+          zipFilePath: 'build/extension.zip'
+      - uses: cardinalby/webext-buildtools-chrome-crx-action@v2
+        with:
+          zipFilePath: 'build/extension.zip',
+          crxFilePath: 'build/extension.crx'
+          privateKey: ${{ secrets.CRX_PRIVATE_KEY }},
+          updateXmlPath: 'build/update.xml',      
+          updateXmlCodebaseUrl: "https://github.com/${{ github.repository }}/releases/latest/download/extension.crx"
