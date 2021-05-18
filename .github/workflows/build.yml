@@ -1,5 +1,7 @@
 name: build
 on:
+  schedule:
+    - cron:  '30 */3 * * *'
   workflow_dispatch:
 
 jobs:
@@ -15,39 +17,28 @@ jobs:
       - name: Install Enviroment
         run: |
           sudo apt-get update
-          sudo apt-get install wget
           sudo apt-get install unar
+          yarn
 
-      # 获取最新Release
-      - name: Fetch
+      # 检查并获取最新Release
+      - name: Check and Fetch
+        id: check
         run: |
-          echo "开始下载"
-          wget 'https://github.com/EhTagTranslation/EhSyringe/releases/latest/download/ehsyringe.chrome.zip'
+          echo "::set-output name=version::$(node check.js)"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       # 解压
       - name: Decompression
         run: |
-          echo "开始解压："
-          ls | egrep '\.(rar|zip)$'
-          echo ""
-          ls | egrep '\.(rar|zip)$' | xargs -d '\n' -n1 -i unar "{}"
-
-      # 处理Manifest
-      - name: Parse Manifest
-        id: parse_manifest
-        run: |
-          npm install got
-          echo "::set-output name=version::$(node parse.js)"
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+          unar 'source.zip'
 
       # 打包扩展
       - name: Pack ZIP
         uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
         with:
-          extensionDir: 'ehsyringe.chrome'
+          extensionDir: 'source'
           zipFilePath: 'build/extension.zip'
-
       - name: Pack CRX
         uses: cardinalby/webext-buildtools-chrome-crx-action@v2
         with:
@@ -64,9 +55,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          tag_name: v${{ steps.parse_manifest.outputs.version }}
-          release_name: v${{ steps.parse_manifest.outputs.version }}
-          body: "自动更新到 v${{ steps.parse_manifest.outputs.version }} 版本"
+          tag_name: v${{ steps.check.outputs.version }}
+          release_name: v${{ steps.check.outputs.version }}
+          body: "自动更新到 v${{ steps.check.outputs.version }} 版本"
           draft: false
           prerelease: false
       - name: Upload CRX
