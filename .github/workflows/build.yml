@@ -1,4 +1,5 @@
 name: build
+concurrency: EhSyringe-build-crx
 on:
   schedule:
     - cron:  '30 */3 * * *'
