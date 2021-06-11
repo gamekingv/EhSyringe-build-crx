@@ -5,8 +5,8 @@ concurrency:
   group: clear-workflow
   cancel-in-progress: true
 on:
-  # schedule:
-    # - cron:  '15/10 * * * *'
+  schedule:
+    - cron:  '45 21 * * 4'
   workflow_dispatch:
 
 jobs:
@@ -28,4 +28,4 @@ jobs:
         run: |
           node clear-workflow.js
         env:
-          CLEAR_TOKEN: ${{ secrets.TOKEN }}
+          CLEAR_TOKEN: ${{ github.TOKEN }}
