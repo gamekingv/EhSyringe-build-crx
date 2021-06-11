@@ -1,0 +1,31 @@
+name: clear-workflow
+env:
+  RETAIN_DAY: 6
+concurrency: 
+  group: clear-workflow
+  cancel-in-progress: true
+on:
+  # schedule:
+    # - cron:  '15/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      # 安装环境
+      - name: Install Enviroment
+        run: |
+          npm install
+          
+      # 抓取RSS
+      - name: Clear 
+        run: |
+          node clear-workflow.js
+        env:
+          CLEAR_TOKEN: ${{ secrets.TOKEN }}
