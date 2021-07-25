@@ -25,9 +25,9 @@ async function cancelWorkflow() {
 }
 
 (async () => {
-  const manifest = JSON.parse(await fs.readFile('ehsyringe.chrome/manifest.json'));
+  const manifest = JSON.parse(await fs.readFile('source/manifest.json'));
   manifest.update_url = `https://github.com/${repository}/releases/latest/download/update.xml`;
-  await fs.writeFile('ehsyringe.chrome/manifest.json', JSON.stringify(manifest, null, 2));
+  await fs.writeFile('source/manifest.json', JSON.stringify(manifest, null, 2));
   try {
     const { body } = await client.get(`https://api.github.com/repos/${repository}/releases/latest`);
     if (`${manifest.version}` === body.tag_name.substr(1)) {
