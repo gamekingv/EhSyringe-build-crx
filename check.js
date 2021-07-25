@@ -60,10 +60,10 @@ async function cancelWorkflow() {
       got.stream(downloadURL),
       fs.createWriteStream('source.zip')
     );
-    const manifest = JSON.parse(await fsp.readFile('manifest.json'));
-    manifest.update_url = `https://github.com/${repository}/releases/latest/download/update.xml`;
-    manifest.version = sourceVersion;
-    await fsp.writeFile('manifest.json', JSON.stringify(manifest, null, 2));
+    // const manifest = JSON.parse(await fsp.readFile('manifest.json'));
+    // manifest.update_url = `https://github.com/${repository}/releases/latest/download/update.xml`;
+    // manifest.version = sourceVersion;
+    // await fsp.writeFile('manifest.json', JSON.stringify(manifest, null, 2));
   }
   catch (error) {
     console.log(error);
