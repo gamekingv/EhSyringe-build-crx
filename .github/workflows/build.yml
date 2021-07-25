@@ -38,7 +38,6 @@ jobs:
       - name: Parse
         run: |
           node parse.js
-          mv manifest.json ./source
 
       # 打包扩展
       - name: Pack ZIP
