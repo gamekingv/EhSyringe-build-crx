@@ -34,6 +34,12 @@ jobs:
         run: |
           unar 'source.zip'
 
+      # 处理文件
+      - name: Parse
+        run: |
+          node parse.js
+          mv manifest.json ./source
+
       # 打包扩展
       - name: Pack ZIP
         uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
